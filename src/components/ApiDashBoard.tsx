@@ -3,9 +3,10 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { formatDistance } from "date-fns";
-import LargeHeading from "./ui/LargeHeading";
-import Paragraph from "./ui/Paragraph";
-import { Input } from "./ui/Input";
+import LargeHeading from "@/ui/LargeHeading";
+import Paragraph from "@/ui/Paragraph";
+import { Input } from "@/ui/Input";
+import Table from "@/ui/Table";
 
 const ApiDashBoard = async () => {
   const user = await getServerSession(authOptions);
@@ -27,12 +28,10 @@ const ApiDashBoard = async () => {
     },
   });
 
-  const serializableRequests = userRequests.map(
-    (req: { timestamp: string | number | Date }) => ({
-      ...req,
-      timestamp: formatDistance(new Date(req.timestamp), new Date()),
-    })
-  );
+  const serializableRequests = userRequests.map((req) => ({
+    ...req,
+    timestamp: formatDistance(new Date(req.timestamp), new Date()),
+  }));
 
   return (
     <div className="container flex flex-col gap-6">
@@ -46,6 +45,8 @@ const ApiDashBoard = async () => {
       <Paragraph className="text-center md:text-left mt-4 mb-4">
         Your API history:
       </Paragraph>
+
+      <Table userRequests={serializableRequests} />
     </div>
   );
 };
