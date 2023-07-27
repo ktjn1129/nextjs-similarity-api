@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useState } from "react";
 import {
   DropdownMenu,
@@ -40,6 +42,23 @@ const ApiKeyOptions: FC<ApiKeyOptionsProps> = ({ apiKeyId, apiKeyKey }) => {
     }
   };
 
+  const revokeCurrentApiKey = async () => {
+    setIsRevoking(true);
+
+    try {
+      await revokeApiKey({ keyId: apiKeyId });
+      router.refresh();
+    } catch (error) {
+      toast({
+        title: "Error revoking API key",
+        message: "Please try again later.",
+        type: "error",
+      });
+    } finally {
+      setIsRevoking(false);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger disabled={isCreatingNew || isRevoking} asChild>
@@ -72,9 +91,13 @@ const ApiKeyOptions: FC<ApiKeyOptionsProps> = ({ apiKeyId, apiKeyKey }) => {
           Copy
         </DropdownMenuItem>
 
-        <DropdownMenuItem>Create new key</DropdownMenuItem>
+        <DropdownMenuItem onClick={createNewApiKey}>
+          Create new key
+        </DropdownMenuItem>
 
-        <DropdownMenuItem>Revoke key</DropdownMenuItem>
+        <DropdownMenuItem onClick={revokeCurrentApiKey}>
+          Revoke key
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

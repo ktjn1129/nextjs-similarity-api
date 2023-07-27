@@ -16,7 +16,6 @@ const RequestApiKey: FC = () => {
 
   const createNewApiKey = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setIsCreating(true);
 
     try {
@@ -32,13 +31,15 @@ const RequestApiKey: FC = () => {
 
         return;
       }
-    }
 
-    toast({
-      title: "Error",
-      message: "Something went wrong.",
-      type: "error",
-    });
+      toast({
+        title: "Error",
+        message: "Something went wrong.",
+        type: "error",
+      });
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   return (
