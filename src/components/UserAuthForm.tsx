@@ -3,8 +3,8 @@
 import { cn } from "@/lib/utils";
 import { signIn } from "next-auth/react";
 import { FC, useState } from "react";
-import { toast } from "./ui/Toast";
-import Button from "./ui/Button";
+import { toast } from "@/ui/Toast";
+import Button from "@/ui/Button";
 
 const UserAuthForm: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
